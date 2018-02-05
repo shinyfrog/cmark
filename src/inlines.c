@@ -339,8 +339,8 @@ static cmark_node *handle_backticks(subject *subj, int options) {
     cmark_strbuf_trim(&buf);
     cmark_strbuf_normalize_whitespace(&buf);
 
-    cmark_node *node = make_code(subj, startpos, endpos - openticks.len - 1, cmark_chunk_buf_detach(&buf));
-    adjust_subj_node_newlines(subj, node, endpos - startpos, openticks.len, options);
+    cmark_node *node = make_code(subj, startpos - openticks.len, endpos -1, cmark_chunk_buf_detach(&buf));
+    adjust_subj_node_newlines(subj, node, endpos - startpos, 0, options);
     return node;
   }
 }
@@ -729,9 +729,10 @@ static delimiter *S_insert_emph(subject *subj, delimiter *opener,
   }
   cmark_node_insert_after(opener_inl, emph);
 
-  emph->start_line = emph->end_line = subj->line;
-  emph->start_column = opener_inl->start_column + subj->column_offset;
-  emph->end_column = closer_inl->end_column + subj->column_offset;
+  emph->start_line = opener_inl->start_line;
+  emph->end_line = closer_inl->end_line;
+  emph->start_column = opener_inl->start_column + opener_num_chars;
+  emph->end_column = closer_inl->end_column - closer_num_chars;
 
   // if opener has 0 characters, remove it and its associated inline
   if (opener_num_chars == 0) {
