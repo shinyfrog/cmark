@@ -1051,7 +1051,7 @@ static cmark_node *handle_close_bracket(cmark_parser *parser, subject *subj) {
 
   // get last [ or ![
   opener = subj->last_bracket;
-
+    
   if (opener == NULL) {
     return make_str(subj, subj->pos - 1, subj->pos - 1, cmark_chunk_literal("]"));
   }
@@ -1086,6 +1086,15 @@ static cmark_node *handle_close_bracket(cmark_parser *parser, subject *subj) {
     endall = endtitle + scan_spacechars(&subj->input, endtitle);
 
     if (peek_at(subj, endall) == ')') {
+      
+      // not allowing \n inside the link definition
+      int since;
+      int newlines = count_newlines(subj, opener->position, endall-opener->position, &since);
+      if (newlines > 0) {
+        pop_bracket(subj);
+        return make_str(subj, subj->pos - 1, subj->pos - 1, cmark_chunk_literal("]"));
+      }
+        
       subj->pos = endall + 1;
 
       title_chunk =
