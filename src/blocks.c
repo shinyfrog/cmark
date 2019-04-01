@@ -1107,7 +1107,7 @@ static void open_new_blocks(cmark_parser *parser, cmark_node **container,
       (*container)->as.html_block_type = matched;
       // note, we don't adjust parser->offset because the tag is part of the
       // text
-    } else if (!indented && cont_type == CMARK_NODE_PARAGRAPH &&
+    } else if (!indented && !parser->indent && input->len > 3 && cont_type == CMARK_NODE_PARAGRAPH &&
                (lev =
                     scan_setext_heading_line(input, parser->first_nonspace))) {
       (*container)->type = (uint16_t)CMARK_NODE_HEADING;
