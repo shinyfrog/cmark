@@ -1400,7 +1400,12 @@ bufsize_t cmark_parse_reference_inline(cmark_mem *mem, cmark_chunk *input,
   // parse label:
   if (!link_label(&subj, &lab) || lab.len == 0)
     return 0;
-
+   
+  // not a link reference as this should be parsed as a footnote reference instead.
+  if (lab.data[0] == '^') {
+    return 0;
+  }
+      
   // colon:
   if (peek_char(&subj) == ':') {
     advance(&subj);
