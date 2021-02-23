@@ -9,7 +9,11 @@ include_directories(
   ${PROJECT_BINARY_DIR}/src
   ${PROJECT_BINARY_DIR}/extensions
 )
-target_link_libraries(api_test libcmark-gfmextensions libcmark-gfm)
+if(CMARK_SHARED)
+  target_link_libraries(api_test libcmark-gfm-extensions libcmark-gfm)
+else()
+  target_link_libraries(api_test libcmark-gfm-extensions_static libcmark-gfm_static)
+endif()
 
 # Compiler flags
 if(MSVC)
@@ -22,5 +26,5 @@ if(MSVC)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd4706 /D_CRT_SECURE_NO_WARNINGS")
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /TP")
 elseif(CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_C_COMPILER_ID}" STREQUAL "Clang")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -std=c99 -pedantic -D_BSD_SOURCE -D_POSIX_SOURCE")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -std=c99 -pedantic")
 endif()

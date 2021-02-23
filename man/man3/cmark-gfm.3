@@ -1,4 +1,4 @@
-.TH cmark-gfm 3 "November 09, 2017" "LOCAL" "Library Functions Manual"
+.TH cmark-gfm 3 "April 08, 2019" "LOCAL" "Library Functions Manual"
 .SH
 NAME
 .PP
@@ -862,11 +862,25 @@ Render \f[C]softbreak\f[] elements as hard line breaks.
 .fi
 
 .PP
-Suppress raw HTML and unsafe links (\f[C]javascript:\f[],
+\f[C]CMARK_OPT_SAFE\f[] is defined here for API compatibility, but it no
+longer has any effect. "Safe" mode is now the default: set
+\f[C]CMARK_OPT_UNSAFE\f[] to disable it.
+
+.PP
+.nf
+\fC
+.RS 0n
+#define CMARK_OPT_UNSAFE (1 << 17)
+.RE
+\f[]
+.fi
+
+.PP
+Render raw HTML and unsafe links (\f[C]javascript:\f[],
 \f[C]vbscript:\f[], \f[C]file:\f[], and \f[C]data:\f[], except for
 \f[C]image/png\f[], \f[C]image/gif\f[], \f[C]image/jpeg\f[], or
-\f[C]image/webp\f[] mime types). Raw HTML is replaced by a placeholder
-HTML comment. Unsafe links are replaced by empty strings.
+\f[C]image/webp\f[] mime types). By default, raw HTML is replaced by a
+placeholder HTML comment. Unsafe links are replaced by empty strings.
 
 .PP
 .nf
@@ -956,6 +970,44 @@ Be liberal in interpreting inline HTML tags.
 
 .PP
 Parse footnotes.
+
+.PP
+.nf
+\fC
+.RS 0n
+#define CMARK_OPT_STRIKETHROUGH_DOUBLE_TILDE (1 << 14)
+.RE
+\f[]
+.fi
+
+.PP
+Only parse strikethroughs if surrounded by exactly 2 tildes. Gives some
+compatibility with redcarpet.
+
+.PP
+.nf
+\fC
+.RS 0n
+#define CMARK_OPT_TABLE_PREFER_STYLE_ATTRIBUTES (1 << 15)
+.RE
+\f[]
+.fi
+
+.PP
+Use style attributes to align table cells instead of align attributes.
+
+.PP
+.nf
+\fC
+.RS 0n
+#define CMARK_OPT_FULL_INFO_STRING (1 << 16)
+.RE
+\f[]
+.fi
+
+.PP
+Include the remainder of the info string in code blocks in a separate
+attribute.
 
 .SS
 Version information

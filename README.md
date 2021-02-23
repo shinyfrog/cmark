@@ -1,7 +1,7 @@
 cmark-gfm
 =========
 
-[![Build Status]](https://travis-ci.org/github/cmark)
+[![Build Status]](https://travis-ci.org/github/cmark-gfm)
 [![Windows Build Status]](https://ci.appveyor.com/project/github/cmark)
 
 `cmark-gfm` is an extended version of the C reference implementation of
@@ -163,14 +163,14 @@ be found in the man pages in the `man` subdirectory.
 Security
 --------
 
-By default, the library will pass through raw HTML and potentially
+By default, the library will scrub raw HTML and potentially
 dangerous links (`javascript:`, `vbscript:`, `data:`, `file:`).
 
-It is recommended that users either disable this potentially unsafe
-feature by using the option `CMARK_OPT_SAFE` (or `--safe` with the
-command-line program), or run the output through an HTML sanitizer
-to protect against
-[XSS attacks](http://en.wikipedia.org/wiki/Cross-site_scripting).
+To allow these, use the option `CMARK_OPT_UNSAFE` (or
+`--unsafe`) with the command line program. If doing so, we
+recommend you use a HTML sanitizer specific to your needs to
+protect against [XSS
+attacks](http://en.wikipedia.org/wiki/Cross-site_scripting).
 
 Contributing
 ------------
@@ -178,7 +178,7 @@ Contributing
 There is a [forum for discussing
 CommonMark](http://talk.commonmark.org); you should use it instead of
 github issues for questions and possibly open-ended discussions.
-Use the [github issue tracker](http://github.com/jgm/CommonMark/issues)
+Use the [github issue tracker](http://github.com/commonmark/CommonMark/issues)
 only for simple, clear, actionable issues.
 
 Authors
@@ -199,8 +199,8 @@ most of the C library's API and its test harness.
 [CommonMark]: http://commonmark.org
 [cmake]: http://www.cmake.org/download/
 [re2c]: http://re2c.org
-[commonmark.js]: https://github.com/jgm/commonmark.js
-[Build Status]: https://img.shields.io/travis/github/cmark/master.svg?style=flat
+[commonmark.js]: https://github.com/commonmark/commonmark.js
+[Build Status]: https://img.shields.io/travis/github/cmark-gfm/master.svg?style=flat
 [Windows Build Status]: https://ci.appveyor.com/api/projects/status/wv7ifhqhv5itm3d5?svg=true
 [american fuzzy lop]: http://lcamtuf.coredump.cx/afl/
 [libFuzzer]: http://llvm.org/docs/LibFuzzer.html

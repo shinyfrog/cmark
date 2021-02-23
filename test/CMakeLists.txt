@@ -9,7 +9,7 @@ else(SPEC_TESTS)
   find_package(PythonInterp 3)
 endif(SPEC_TESTS)
 
-if (CMARK_SHARED)
+if (CMARK_SHARED OR CMARK_STATIC)
   add_test(NAME api_test COMMAND api_test)
 endif()
 
@@ -50,7 +50,8 @@ IF (PYTHONINTERP_FOUND)
       )
 
     add_test(entity_library
-      ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/entity_tests.py"
+      ${PYTHON_EXECUTABLE}
+      "${CMAKE_CURRENT_SOURCE_DIR}/entity_tests.py"
       "--library-dir" "${CMAKE_CURRENT_BINARY_DIR}/../src"
       )
   endif()
@@ -68,16 +69,31 @@ IF (PYTHONINTERP_FOUND)
     "${CMAKE_CURRENT_SOURCE_DIR}/spec_tests.py"
     "--no-normalize"
     "--spec" "${CMAKE_CURRENT_SOURCE_DIR}/extensions.txt"
-    "--program" "${CMAKE_CURRENT_BINARY_DIR}/../src/cmark-gfm --footnotes"
-    "--extensions" "table strikethrough autolink tagfilter"
+    "--program" "${CMAKE_CURRENT_BINARY_DIR}/../src/cmark-gfm"
+    "--extensions" "table strikethrough autolink tagfilter footnotes tasklist"
     )
 
   add_test(roundtrip_extensions_executable
     ${PYTHON_EXECUTABLE}
     "${CMAKE_CURRENT_SOURCE_DIR}/roundtrip_tests.py"
     "--spec" "${CMAKE_CURRENT_SOURCE_DIR}/extensions.txt"
-    "--program" "${CMAKE_CURRENT_BINARY_DIR}/../src/cmark-gfm --footnotes"
-    "--extensions" "table strikethrough autolink tagfilter"
+    "--program" "${CMAKE_CURRENT_BINARY_DIR}/../src/cmark-gfm"
+    "--extensions" "table strikethrough autolink tagfilter footnotes tasklist"
+    )
+
+  add_test(option_table_prefer_style_attributes
+    ${PYTHON_EXECUTABLE}
+    "${CMAKE_CURRENT_SOURCE_DIR}/roundtrip_tests.py"
+    "--spec" "${CMAKE_CURRENT_SOURCE_DIR}/extensions-table-prefer-style-attributes.txt"
+    "--program" "${CMAKE_CURRENT_BINARY_DIR}/../src/cmark-gfm --table-prefer-style-attributes"
+    "--extensions" "table strikethrough autolink tagfilter footnotes tasklist"
+    )
+
+  add_test(option_full_info_string
+    ${PYTHON_EXECUTABLE}
+    "${CMAKE_CURRENT_SOURCE_DIR}/roundtrip_tests.py"
+    "--spec" "${CMAKE_CURRENT_SOURCE_DIR}/extensions-full-info-string.txt"
+    "--program" "${CMAKE_CURRENT_BINARY_DIR}/../src/cmark-gfm --full-info-string"
     )
 
   add_test(regressiontest_executable
